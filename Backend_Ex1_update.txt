@@ -1,0 +1,14 @@
+DATA(sentence) = `ABАP  is excellent `, words TYPE TABLE OF char10, sep(3) VALUE ' - '.
+
+SPLIT condense( sentence ) AT space INTO TABLE DATA(words).
+WRITE: / TEXT-001, lines( words ).
+
+LOOP AT words REFERENCE INTO DATA(word).
+  DATA(chars) = replace( val = word->* regex = `(.)(?=.*\1)` with = `` occ = 0 ).
+  WRITE: / TEXT-002, { word->* }, sep, { strlen( chars ) }.
+ENDLOOP.
+
+
+-- Using Text Elements
+001: 'Number of words: '
+002: 'Number of unique characters in the word: '

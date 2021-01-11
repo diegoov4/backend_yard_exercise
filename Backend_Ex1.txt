@@ -1,0 +1,22 @@
+DATA(sentence) = `ABАP  is excellent `,
+	words TYPE i, w1(4), w2(2), w3(6), sep(3) VALUE ' - '.
+	
+PERFORM count_words USING sentence CHANGING words.
+SPLIT sentence AT space INTO w1 w2 w3.
+WRITE: / TEXT-001, words,
+	   / TEXT-002, w1, sep, STRLEN( w1 ),
+	   / TEXT-002, w2, sep, STRLEN( w2 ),
+	   / TEXT-002, w3, sep, STRLEN( w3 ).
+
+...
+
+-- Include separately with FORM:
+FORM count_words USING iv_sentence TYPE string
+				 CHANGING value(rv_result) TYPE i.
+  rv_result = count( val   = iv_sentence
+                     regex = `(\s\S|^\S)` ).
+ENDFORM.
+
+-- Using Text Elements
+001: 'Number of words: '
+002: 'Number of unique characters in the word: '
